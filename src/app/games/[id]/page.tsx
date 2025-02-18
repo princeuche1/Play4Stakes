@@ -10,6 +10,7 @@ export default function GameDetails({ params }: { params: Promise<{ id: string }
   const resolvedParams = use(params);
   const router = useRouter();
   const { currentUser } = useGameStore();
+  if (!currentUser) return null;
   const game = AVAILABLE_GAMES.find(g => g.id === resolvedParams.id);
 
   if (!game) {

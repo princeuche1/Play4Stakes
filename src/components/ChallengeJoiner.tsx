@@ -7,10 +7,10 @@ import { supabase } from '@/lib/supabase';
 import { GameInfo } from '@/types/game';
 
 interface ChallengeJoinerProps {
-  game: GameInfo;
+  challengeId: string;
 }
 
-export default function ChallengeJoiner({ game }: ChallengeJoinerProps) {
+export default function ChallengeJoiner({ challengeId }: ChallengeJoinerProps) {
   const router = useRouter();
   const { currentUser, setChallenge, deductTokens } = useGameStore();
   const [gameId, setGameId] = useState('');

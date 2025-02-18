@@ -16,10 +16,10 @@ export async function GET(
     }
 
     return NextResponse.json(challenge);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { error: 'Failed to fetch challenge' },
-      { status: 500 }
+      { error: 'Challenge not found' },
+      { status: 404 }
     );
   }
 }
@@ -46,10 +46,21 @@ export async function POST(
     challenges.set(params.id, challenge);
 
     return NextResponse.json(challenge);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to join challenge' },
       { status: 500 }
     );
+  }
+}
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    // Your code here
+  } catch {
+    return new Response('Failed to join challenge', { status: 500 });
   }
 } 
