@@ -14,11 +14,9 @@ export function broadcastGameUpdate(gameId: string, challenge: Challenge) {
   if (!streams) return;
 
   const encoder = new TextEncoder();
-  const data = encoder.encode(`data: ${JSON.stringify(challenge)}\n\n`);
-
   streams.forEach((controller) => {
     try {
-      controller.enqueue(data);
+      controller.enqueue(encoder.encode(`data: ${JSON.stringify(challenge)}\n\n`));
     } catch (error) {
       console.error('Error broadcasting game update:', error);
     }

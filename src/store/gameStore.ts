@@ -54,7 +54,6 @@ const useGameStore = create<GameStore>((set, get) => ({
 
     try {
       const isHost = userId === challenge.hostId;
-      const timeField = isHost ? 'hostTime' : 'challengerTime';
 
       // Update player's time
       const { error: playerError } = await supabase
