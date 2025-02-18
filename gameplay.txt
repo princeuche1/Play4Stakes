@@ -1,0 +1,116 @@
+5-Numbers Sprint - Complete Game Flow
+Challenge Creator Path
+1. Initial Landing
+same as before
+2. Game page
+* User arrives at game page
+* Views game description and rules
+* Clicks "Create Challenge" button
+3. Challenge Creation page
+* User sees stake amount input field 
+* System displays:
+   * Current wallet balance
+   * Input validation in real-time
+* User enters stake amount
+* System validates:
+   * Amount doesn't exceed wallet balance
+* User clicks "Create Game" button
+4. Challenge Confirmation page
+* System generates unique game ID
+* Displays:
+   * Game ID with copy button
+   * Stake amount
+   * 2-minute countdown timer
+* User can:
+   * Copy game ID to share
+   * confirming shared takes user to waiting page
+5. Waiting Page
+* Creator is locked in lobby
+* Two possible outcomes:
+   1. Challenge Accepted:
+      * Shows "Opponent Found!" notification
+      * Displays opponent's username
+      * 15-second countdown begins
+   2. Challenge Expires:
+      * After 2 minutes with no acceptance
+      * Stakes are returned
+      * Option to create new challenge
+6. Game Page
+Pre-Game (15 seconds)
+* Shows "Get Ready" message
+* Displays both players' usernames
+* Shows stake amount
+* Countdown to game start
+Active Game
+* Grid appears (10x5)
+* Shows 5 target numbers
+* Displays:
+   * Running timer
+   * Progress counter (X/5)
+   * Highlighted found numbers
+   * Wrong selection indicators
+7. Results Phase
+* Game ends when either:
+   * Player finds all numbers
+   * Opponent finds all numbers
+* Shows:
+   * Win/Loss status
+   * Final completion time
+   * Opponent's completion time
+   * Token distribution details
+Challenge Accepter Path
+1. Initial Landing
+same as before
+
+2. Game page
+User arrives at game page
+Views game description and rules
+Clicks "Join Existing Challenge" button
+
+3. Join Challenge page
+* User enters game ID
+* System validates ID
+* If valid:
+   * Shows challenge details
+   * Displays stake amount
+* If invalid:
+   * Shows error message ("Invalid game ID")
+   * Option to try again
+4. Wallet Connection & Stake Verification
+* System checks:
+   * Wallet connection
+   * Sufficient balance for stake
+* If requirements not met:
+   * Shows appropriate error
+   * Option to connect wallet/add funds
+5. Challenge Acceptance page
+* User reviews stake amount
+* Clicks "Accept Challenge" button
+* System locks stake amount
+* Enters 15-second pre-game lobby
+6. Game Phase
+*(Same as Creator's game phase)*
+7. Results Phase
+*(Same as Creator's results phase)*
+Error Handling
+Wallet Errors
+* Insufficient funds
+* Connection failed
+* Transaction failed
+* Network issues
+Game Errors
+* Invalid game ID
+* Expired challenge
+* Opponent disconnection (counts as forfeit)
+* Server synchronization issues
+
+Token Management
+Staking Process
+1. Creator stakes tokens
+2. Accepter matches stake
+3. Total stake locked in contract
+Distribution Process
+1. Winner determined
+2. Tokens automatically transferred
+3. Transaction confirmation
+4. Results displayed
