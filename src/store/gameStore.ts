@@ -34,14 +34,13 @@ const useGameStore = create<GameStore>((set, get) => ({
 
   setGameActive: async (challengeId) => {
     try {
-      const { data: challenge, error } = await supabase
+      const { data: challenge } = await supabase
         .from('challenges')
         .update({ status: 'active' })
         .eq('id', challengeId)
         .select()
         .single();
 
-      if (error) throw error;
       set({ challenge });
     } catch (error) {
       console.error('Failed to start game:', error);
@@ -53,8 +52,8 @@ const useGameStore = create<GameStore>((set, get) => ({
     if (!challenge) return;
 
     try {
-      const isHost = userId === challenge.hostId;
-
+      const isHost = userId === challenge.host_id;
+      
       // Update player's time
       const { error: playerError } = await supabase
         .from('challenge_players')
@@ -74,15 +73,15 @@ const useGameStore = create<GameStore>((set, get) => ({
 
       // If both players have finished, determine winner
       if (players.every(p => p.time !== null)) {
-        const hostPlayer = players.find(p => p.user_id === challenge.hostId);
-        const challengerPlayer = players.find(p => p.user_id !== challenge.hostId);
+        const hostPlayer = players.find(p => p.user_id === challenge.host_id);
+        const challengerPlayer = players.find(p => p.user_id !== challenge.host_id);
 
         const winnerId = hostPlayer!.time! < challengerPlayer!.time! 
           ? hostPlayer!.user_id 
           : challengerPlayer!.user_id;
 
         // Update challenge status and create game result
-        const { data: updatedChallenge, error: updateError } = await supabase
+        const { data: updatedChallenge } = await supabase
           .from('challenges')
           .update({ 
             status: 'completed',
@@ -90,8 +89,6 @@ const useGameStore = create<GameStore>((set, get) => ({
           .eq('id', challenge.id)
           .select()
           .single();
-
-        if (updateError) throw updateError;
 
         const { error: resultError } = await supabase
           .from('game_results')
@@ -174,4 +171,20 @@ const useGameStore = create<GameStore>((set, get) => ({
   }
 }));
 
-export default useGameStore; 
+export default useGameStore;
+
+export function broadcastGameUpdate(gameId: string, challenge: Challenge) {
+  const streams = gameStreams.get(gameId);
+  if (!streams) return;
+
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`data: ${JSON.stringify(challenge)}\n\n`);
+  
+  streams.forEach((controller) => {
+    try {
+      controller.enqueue(data);
+    } catch (error) {
+      console.error('Error broadcasting game update:', error);
+    }
+  });
+} 
